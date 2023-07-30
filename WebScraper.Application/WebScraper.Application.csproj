@@ -10,11 +10,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="MoneyRates\Queries\" />
-		<Folder Include="CurrencyRates\Queries\" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="ConsoleTables" Version="2.5.0" />
 		<PackageReference Include="MediatR" Version="12.1.1" />
 		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="7.0.0" />

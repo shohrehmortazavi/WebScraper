@@ -12,8 +12,8 @@ namespace WebScraper.DataAccess.SeedWorks
     {
         public static IServiceCollection AddMongo(this IServiceCollection services)
         {
-          //  BsonSerializer.RegisterSerializer(new GuidSerializer(BsonType.String));
-          //  BsonSerializer.RegisterSerializer(new DateTimeOffsetSerializer(BsonType.String));
+            BsonSerializer.RegisterSerializer(new GuidSerializer(BsonType.String));
+            BsonSerializer.RegisterSerializer(new DateTimeOffsetSerializer(BsonType.String));
 
             services.AddSingleton(serviceProvider =>
             {
