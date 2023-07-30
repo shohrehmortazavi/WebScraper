@@ -13,6 +13,8 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Appli
 builder.Services.AddMongo();
 builder.Services.AddCustomServices();
 
+builder.Services.Configure<BackgroundServicesSetting>(options => builder.Configuration.GetSection("BackgroundServicesSetting").Bind(options));
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

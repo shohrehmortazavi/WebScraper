@@ -2,26 +2,32 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using WebScraper.Application.MoneyRates.Commands;
 using WebScraper.Application.MoneyRates.Services;
+using WebScraper.Application.SeedWorks;
 
 namespace WebScraper.Application.MoneyRates.BackgroundServices
 {
     public class MoneyRateBackgroundService : BackgroundService
     {
-        private readonly TimeSpan _period = TimeSpan.FromSeconds(30);
-        private readonly ILogger<MoneyRateBackgroundService> _logger;
+        private readonly TimeSpan _period;
         private readonly IServiceScopeFactory _factory;
+        private readonly ILogger<MoneyRateBackgroundService> _logger;
+        public readonly IOptions<BackgroundServicesSetting> _backgroundServiceSetting;
+        private readonly MoneyRateSetting _moneyRateSetting;
         private int _executionCount = 0;
-        public bool IsEnabled { get; set; }
 
-        public MoneyRateBackgroundService(
-            ILogger<MoneyRateBackgroundService> logger,
-            IServiceScopeFactory factory)
+        public MoneyRateBackgroundService(ILogger<MoneyRateBackgroundService> logger,
+                                          IServiceScopeFactory factory,
+                                          IOptions<BackgroundServicesSetting> backgroundServiceSetting)
         {
             _logger = logger;
             _factory = factory;
-            IsEnabled = true;
+
+            _backgroundServiceSetting = backgroundServiceSetting;
+            _moneyRateSetting = _backgroundServiceSetting.Value.MoneyRate;
+            _period = TimeSpan.FromSeconds(_moneyRateSetting.RepeatedTime);
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -34,7 +40,7 @@ namespace WebScraper.Application.MoneyRates.BackgroundServices
             {
                 try
                 {
-                    if (IsEnabled)
+                    if (_moneyRateSetting.IsEnabled)
                     {
                         await using AsyncServiceScope asyncScope = _factory.CreateAsyncScope();
 

@@ -12,6 +12,7 @@ namespace WebScraper.Application.CurrencyRates.Services
         private static string Url = "https://mex.co.ir";
         private static int TreadSleep = 5000;
         private readonly ILogger<CurrencyRateScraperService> _logger;
+
         public CurrencyRateScraperService(ILogger<CurrencyRateScraperService> logger)
         {
             SetChromeOption();

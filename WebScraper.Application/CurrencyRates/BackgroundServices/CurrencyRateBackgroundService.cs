@@ -2,26 +2,31 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using WebScraper.Application.CurrencyRates.Commands;
 using WebScraper.Application.CurrencyRates.Services;
+using WebScraper.Application.SeedWorks;
 
 namespace WebScraper.Application.CurrencyRates.BackgroundServices
 {
     public class CurrencyRateBackgroundService : BackgroundService
     {
-        private readonly TimeSpan _period = TimeSpan.FromSeconds(30);
-        private readonly ILogger<CurrencyRateBackgroundService> _logger;
+        private readonly TimeSpan _period;
         private readonly IServiceScopeFactory _factory;
+        private readonly ILogger<CurrencyRateBackgroundService> _logger;
+        public readonly IOptions<BackgroundServicesSetting> _backgroundServiceSetting;
+        private readonly CurrencyRateSetting _currencyRateSetting;
         private int _executionCount = 0;
-        public bool IsEnabled { get; set; }
 
-        public CurrencyRateBackgroundService(
-            ILogger<CurrencyRateBackgroundService> logger,
-            IServiceScopeFactory factory)
+        public CurrencyRateBackgroundService(ILogger<CurrencyRateBackgroundService> logger,
+                                              IServiceScopeFactory factory,
+                                              IOptions<BackgroundServicesSetting> backgroundServiceSetting)
         {
             _logger = logger;
             _factory = factory;
-            IsEnabled = true;
+            _backgroundServiceSetting = backgroundServiceSetting;
+            _currencyRateSetting = _backgroundServiceSetting.Value.CurrencyRate;
+            _period = TimeSpan.FromSeconds(_currencyRateSetting.RepeatedTime);
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -37,7 +42,7 @@ namespace WebScraper.Application.CurrencyRates.BackgroundServices
             {
                 try
                 {
-                    if (IsEnabled)
+                    if (_currencyRateSetting.IsEnabled)
                     {
                         await using AsyncServiceScope asyncScope = _factory.CreateAsyncScope();
 
