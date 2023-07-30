@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using WebScraper.Application.CurrencyRates.Dtos;
 using WebScraper.Domain.CurrencyRates;
-using WebScraper.Domain.CurrencyRates.SeedWorks;
+using WebScraper.Domain.SeedWorks;
 
 namespace WebScraper.Application.CurrencyRates.Commands
 {
