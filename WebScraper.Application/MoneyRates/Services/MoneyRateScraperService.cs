@@ -26,7 +26,7 @@ namespace WebScraper.Application.MoneyRates.Services
             driver.Navigate().GoToUrl(Url);
             Thread.Sleep(TreadSleep);
 
-            var moneyRateList = driver.FindElements(By.XPath("//*[@id=\"root\"]/div[1]/div[2]/div/div/div[2]/div/div/div[2]/div/div/div[2]/div"));
+            var moneyRateList = driver.FindElements(By.XPath("//*[@id=\"root\"]/div[1]/div[2]/div/div/div[2]/div/div/div[1]/div/div/div[2]/div"));
             foreach (var row in moneyRateList)
             {
                 var moneyRate = CreateMoneyRateDto(row);
@@ -58,8 +58,8 @@ namespace WebScraper.Application.MoneyRates.Services
             {
                 Name = row.FindElement(By.XPath("div[1]")).Text,
                 Symbol = row.FindElement(By.XPath("div[2]")).Text,
-                Sell = Convert.ToDecimal(row.FindElement(By.XPath("div[3]")).Text),
-                Buy = Convert.ToDecimal(row.FindElement(By.XPath("div[4]")).Text),
+                Buy = Convert.ToDecimal(row.FindElement(By.XPath("div[3]")).Text),
+                Sell = Convert.ToDecimal(row.FindElement(By.XPath("div[4]")).Text),
                 CurrentTime = TimeOnly.FromDateTime(DateTime.Now),
                 CurrentDate = DateOnly.FromDateTime(DateTime.Now)
             };
