@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="CurrencyRates\Services\ICurrencyRateScraperService.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="CurrencyRates\Queries\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="ConsoleTables" Version="2.5.0" />
+		<PackageReference Include="MediatR" Version="12.1.1" />
+		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="7.0.0" />
+		<PackageReference Include="Selenium.WebDriver" Version="4.10.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\WebScraper.DataAccess\WebScraper.DataAccess.csproj" />
+		<ProjectReference Include="..\WebScraper.Domain\WebScraper.Domain.csproj" />
+	</ItemGroup>
+
+</Project>
