@@ -41,19 +41,18 @@ namespace WebScraper.DataAccess.SeedWorks
         public async Task<int> SaveChanges()
         {
             int commandCount = 0;
-          
-            using (_session = await _mongoClient.StartSessionAsync())
-            {
-                _session.StartTransaction();
-                var commandTasks = _commands.Select(c => c());
 
-                await Task.WhenAll(commandTasks);
+            //  using (_session = await _mongoClient.StartSessionAsync())
+            //  {
+           // _session.StartTransaction();
+            var commandTasks = _commands.Select(c => c());
+            await Task.WhenAll(commandTasks);
 
-                await _session.CommitTransactionAsync();
-                commandCount = _commands.Count;
-                _commands.Clear();
+            //   await _session.CommitTransactionAsync();
+            //    commandCount = _commands.Count;
+            _commands.Clear();
 
-            }
+            //   }
             return commandCount;
         }
         public void Dispose()
