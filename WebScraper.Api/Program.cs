@@ -9,11 +9,15 @@ builder.Services.AddCors(options => options.AddPolicy(Policy, p => p.AllowAnyOri
                   .AllowAnyMethod()
                   .AllowAnyHeader()));
 
+builder.Services.Configure<BackgroundServicesSetting>(options =>
+                 builder.Configuration.GetSection("BackgroundServicesSetting").Bind(options));
+
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ApplicationLayerEntryPoint).Assembly));
 builder.Services.AddMongo();
-builder.Services.AddCustomServices();
+builder.Services.AddCustomServices(builder.Configuration);
 
-builder.Services.Configure<BackgroundServicesSetting>(options => builder.Configuration.GetSection("BackgroundServicesSetting").Bind(options));
+
+
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {

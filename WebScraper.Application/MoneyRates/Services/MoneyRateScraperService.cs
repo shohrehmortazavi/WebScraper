@@ -3,18 +3,15 @@ using Microsoft.Extensions.Logging;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using WebScraper.Application.MoneyRates.Dtos;
+using WebScraper.Application.SeedWorks;
 
 namespace WebScraper.Application.MoneyRates.Services
 {
-    public class MoneyRateScraperService
+    public class MoneyRateScraperService : BaseScraperService
     {
-        private IWebDriver driver;
-        private static string Url = "https://mex.co.ir";
-        private static int TreadSleep = 5000;
         private readonly ILogger<MoneyRateScraperService> _logger;
         public MoneyRateScraperService(ILogger<MoneyRateScraperService> logger)
         {
-            SetChromeOption();
             _logger = logger;
         }
         public List<MoneyRateDto> GetMoneyRates()
@@ -38,20 +35,6 @@ namespace WebScraper.Application.MoneyRates.Services
             return moneyRates;
         }
 
-        public void DriverQuit()
-        {
-            driver.Quit();
-        }
-
-        private void SetChromeOption()
-        {
-            var options = new ChromeOptions();
-            options.AddArgument("--ignore_ssl");
-            options.AddArguments("--ignore-ssl-errors");
-            options.AddArgument("--ignore-certificate-errors");
-            options.AddArguments("headless");
-            driver = new ChromeDriver(options);
-        }
         private static MoneyRateDto CreateMoneyRateDto(IWebElement row)
         {
             return new MoneyRateDto()

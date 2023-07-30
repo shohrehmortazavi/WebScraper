@@ -1,21 +1,17 @@
 ﻿using ConsoleTables;
 using Microsoft.Extensions.Logging;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 using WebScraper.Application.CurrencyRates.Dtos;
+using WebScraper.Application.SeedWorks;
 
 namespace WebScraper.Application.CurrencyRates.Services
 {
-    public class CurrencyRateScraperService
+    public class CurrencyRateScraperService : BaseScraperService
     {
-        private IWebDriver driver;
-        private static string Url = "https://mex.co.ir";
-        private static int TreadSleep = 5000;
         private readonly ILogger<CurrencyRateScraperService> _logger;
 
         public CurrencyRateScraperService(ILogger<CurrencyRateScraperService> logger)
         {
-            SetChromeOption();
             _logger = logger;
         }
 
@@ -37,21 +33,6 @@ namespace WebScraper.Application.CurrencyRates.Services
             return finalCurrencyRate;
         }
 
-        public void DriverQuit()
-        {
-            driver.Quit();
-        }
-
-
-        private void SetChromeOption()
-        {
-            var options = new ChromeOptions();
-            options.AddArgument("--ignore_ssl");
-            options.AddArguments("--ignore-ssl-errors");
-            options.AddArgument("--ignore-certificate-errors");
-            options.AddArguments("headless");
-            driver = new ChromeDriver(options);
-        }
         private string GetRate()
         {
             var convertButton = driver.FindElement(By.XPath("//*[@id=\"__next\"]/div[3]/div[2]/section/div[2]/div/main/div/div[2]/button"));

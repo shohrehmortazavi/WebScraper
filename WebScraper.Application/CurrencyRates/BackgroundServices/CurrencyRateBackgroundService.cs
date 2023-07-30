@@ -25,7 +25,7 @@ namespace WebScraper.Application.CurrencyRates.BackgroundServices
             _logger = logger;
             _factory = factory;
             _backgroundServiceSetting = backgroundServiceSetting;
-            _currencyRateSetting = _backgroundServiceSetting.Value.CurrencyRate;
+            _currencyRateSetting = _backgroundServiceSetting.Value.CurrencyRateSetting;
             _period = TimeSpan.FromSeconds(_currencyRateSetting.RepeatedTime);
         }
 
@@ -42,26 +42,18 @@ namespace WebScraper.Application.CurrencyRates.BackgroundServices
             {
                 try
                 {
-                    if (_currencyRateSetting.IsEnabled)
-                    {
-                        await using AsyncServiceScope asyncScope = _factory.CreateAsyncScope();
+                    await using AsyncServiceScope asyncScope = _factory.CreateAsyncScope();
 
-                        var _currencyRateScraperService = asyncScope.ServiceProvider.GetRequiredService<CurrencyRateScraperService>();
-                        var result = _currencyRateScraperService.GetCurrencyRate();
+                    var _currencyRateScraperService = asyncScope.ServiceProvider.GetRequiredService<CurrencyRateScraperService>();
+                    var result = _currencyRateScraperService.GetCurrencyRate();
 
-                        var mediator = asyncScope.ServiceProvider.GetRequiredService<IMediator>();
-                        var response = await mediator.Send(new CreateCurrencyRateCommand(result));
-                        _logger.LogInformation("CurrencyRate Created!");
+                    var mediator = asyncScope.ServiceProvider.GetRequiredService<IMediator>();
+                    var response = await mediator.Send(new CreateCurrencyRateCommand(result));
+                    _logger.LogInformation("CurrencyRate Created!");
 
-                        _executionCount++;
-                        _logger.LogInformation(
-                            $"Executed CurrencyRateBackgroundService - Count: {_executionCount}");
-                    }
-                    else
-                    {
-                        _logger.LogInformation(
-                            "Skipped CurrencyRateBackgroundService");
-                    }
+                    _executionCount++;
+                    _logger.LogInformation(
+                        $"Executed CurrencyRateBackgroundService - Count: {_executionCount}");
                 }
                 catch (Exception ex)
                 {

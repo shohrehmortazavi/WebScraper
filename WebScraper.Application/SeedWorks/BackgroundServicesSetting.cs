@@ -2,8 +2,8 @@
 {
     public class BackgroundServicesSetting
     {
-        public CurrencyRateSetting CurrencyRate { get; set; }
-        public MoneyRateSetting MoneyRate { get; set; }
+        public CurrencyRateSetting CurrencyRateSetting { get; set; }
+        public MoneyRateSetting MoneyRateSetting { get; set; }
     }
 
     public class MoneyRateSetting: BaseSetting

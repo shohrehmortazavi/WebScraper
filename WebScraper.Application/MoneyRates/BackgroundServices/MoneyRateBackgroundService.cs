@@ -26,7 +26,7 @@ namespace WebScraper.Application.MoneyRates.BackgroundServices
             _factory = factory;
 
             _backgroundServiceSetting = backgroundServiceSetting;
-            _moneyRateSetting = _backgroundServiceSetting.Value.MoneyRate;
+            _moneyRateSetting = _backgroundServiceSetting.Value.MoneyRateSetting;
             _period = TimeSpan.FromSeconds(_moneyRateSetting.RepeatedTime);
         }
 
@@ -40,29 +40,21 @@ namespace WebScraper.Application.MoneyRates.BackgroundServices
             {
                 try
                 {
-                    if (_moneyRateSetting.IsEnabled)
+                    await using AsyncServiceScope asyncScope = _factory.CreateAsyncScope();
+
+                    var _moneyRateScraperService = asyncScope.ServiceProvider.GetRequiredService<MoneyRateScraperService>();
+                    var moneyRates = _moneyRateScraperService.GetMoneyRates();
+
+                    var mediator = asyncScope.ServiceProvider.GetRequiredService<IMediator>();
+                    foreach (var moneyRate in moneyRates)
                     {
-                        await using AsyncServiceScope asyncScope = _factory.CreateAsyncScope();
-
-                        var _moneyRateScraperService = asyncScope.ServiceProvider.GetRequiredService<MoneyRateScraperService>();
-                        var moneyRates = _moneyRateScraperService.GetMoneyRates();
-
-                        var mediator = asyncScope.ServiceProvider.GetRequiredService<IMediator>();
-                        foreach (var moneyRate in moneyRates)
-                        {
-                            var response = await mediator.Send(new CreateMoneyRateCommand(moneyRate));
-                            _logger.LogInformation("MoneyRate Created!");
-                        }
-
-                        _executionCount++;
-                        _logger.LogInformation(
-                            $"Executed MoneyRateBackgroundService - Count: {_executionCount}");
+                        var response = await mediator.Send(new CreateMoneyRateCommand(moneyRate));
+                        _logger.LogInformation("MoneyRate Created!");
                     }
-                    else
-                    {
-                        _logger.LogInformation(
-                            "Skipped MoneyRateBackgroundService");
-                    }
+
+                    _executionCount++;
+                    _logger.LogInformation(
+                        $"Executed MoneyRateBackgroundService - Count: {_executionCount}");
                 }
                 catch (Exception ex)
                 {
