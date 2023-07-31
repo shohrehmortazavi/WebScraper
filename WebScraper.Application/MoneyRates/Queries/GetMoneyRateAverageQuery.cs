@@ -40,7 +40,7 @@ namespace WebScraper.Application.MoneyRates.Queries
                         break;
 
                     case MoneyRateTypeEnum.Buy:
-                        average = list.Sum(x => x.Buy) / item.Count();
+                        average = item.Sum(x => x.Buy) / item.Count();
                         break;
 
                     default:
