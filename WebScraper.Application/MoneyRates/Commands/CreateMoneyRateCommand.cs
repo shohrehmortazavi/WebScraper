@@ -33,15 +33,15 @@ namespace WebScraper.Application.MoneyRates.Commands
             if (string.IsNullOrEmpty(moneyRate.Symbol))
                 _logger.LogError("Code is NULL!");
 
-            if (moneyRate.CurrentDate > DateOnly.FromDateTime(DateTime.Now))
+            if (Convert.ToDateTime(moneyRate.CurrentDate) > DateTime.Now)
                 _logger.LogError("Current Date is greater than Now");
 
-            if (moneyRate.CurrentTime > TimeOnly.FromDateTime(DateTime.Now))
+            if (Convert.ToDateTime(moneyRate.CurrentTime) > DateTime.Now)
                 _logger.LogError("Current Time is greater than Now");
 
-
+            var current = Convert.ToDateTime(moneyRate.CurrentDate + " " + moneyRate.CurrentTime);
             var moneyRateDb = new MoneyRate(moneyRate.Name, moneyRate.Symbol, moneyRate.Sell,
-                                            moneyRate.Buy, moneyRate.CurrentTime, moneyRate.CurrentDate);
+                                            moneyRate.Buy, current);
 
             await _unitOfWork.MoneyRateWriteRepository.CreateAsync(moneyRateDb);
             await _unitOfWork.Commit();

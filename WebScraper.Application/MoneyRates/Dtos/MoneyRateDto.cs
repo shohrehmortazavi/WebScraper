@@ -7,8 +7,8 @@
         public string Symbol { get; set; }
         public decimal Sell { get; set; }
         public decimal Buy { get; set; }
-        public TimeOnly CurrentTime { get; set; }
-        public DateOnly CurrentDate { get; set; }
+        public string CurrentTime { get; set; }
+        public string CurrentDate { get; set; }
 
 
 

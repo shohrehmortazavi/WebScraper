@@ -30,8 +30,8 @@ namespace WebScraper.Application.MoneyRates.Queries
                 Buy = x.Buy,
                 Sell = x.Sell,
                 Symbol = x.Symbol,
-                CurrentTime = x.CurrentTime,
-                CurrentDate = x.CurrentDate
+                CurrentTime = x.CurrentDate.ToShortTimeString(),
+                CurrentDate = x.CurrentDate.ToShortDateString()
             }).ToList();
         }
     }

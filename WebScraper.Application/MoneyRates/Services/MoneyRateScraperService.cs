@@ -1,7 +1,6 @@
 ﻿using ConsoleTables;
 using Microsoft.Extensions.Logging;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 using WebScraper.Application.MoneyRates.Dtos;
 using WebScraper.Application.SeedWorks;
 
@@ -43,8 +42,8 @@ namespace WebScraper.Application.MoneyRates.Services
                 Symbol = row.FindElement(By.XPath("div[2]")).Text,
                 Buy = Convert.ToDecimal(row.FindElement(By.XPath("div[3]")).Text),
                 Sell = Convert.ToDecimal(row.FindElement(By.XPath("div[4]")).Text),
-                CurrentTime = TimeOnly.FromDateTime(DateTime.Now),
-                CurrentDate = DateOnly.FromDateTime(DateTime.Now)
+                CurrentTime = DateTime.Now.ToShortTimeString(),
+                CurrentDate = DateTime.Now.ToShortDateString()
             };
         }
         private static void ShowConsoleTable(List<MoneyRateDto> moneyRates)

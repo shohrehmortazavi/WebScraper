@@ -25,9 +25,9 @@ namespace WebScraper.DataAccess.SeedWorks
 
         public async Task<IReadOnlyCollection<T>> GetAllAsync(Expression<Func<T, bool>> filter)
         {
-            var finalFilter = Expression.Lambda<Func<T, bool>>(filter, filter.Parameters);
+           // var finalFilter = Expression.Lambda<Func<T, bool>>(filter, filter.Parameters);
 
-            var result = await _dbCollection.Find(finalFilter).ToListAsync();
+            var result = await _dbCollection.Find(filter).ToListAsync();
             return result;
         }
 
