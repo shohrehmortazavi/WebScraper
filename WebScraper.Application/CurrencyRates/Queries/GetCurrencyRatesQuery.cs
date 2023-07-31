@@ -28,8 +28,8 @@ namespace WebScraper.Application.CurrencyRates.Queries
                 Id = x.Id,
                 Rate = x.Rate,
                 Symbol = x.Symbol,
-                CurrentTime = x.CurrentTime,
-                CurrentDate = x.CurrentDate
+                CurrentTime = x.CurrentDate.ToShortTimeString(),
+                CurrentDate = x.CurrentDate.ToShortDateString()
             }).ToList();
         }
     }

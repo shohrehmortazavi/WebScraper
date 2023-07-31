@@ -63,8 +63,8 @@ namespace WebScraper.Application.CurrencyRates.Services
             {
                 Rate = Convert.ToDecimal(rate.ToString().Split(' ')[3]),
                 Symbol = rate.ToString().Split(' ')[4],
-                CurrentDate = DateOnly.FromDateTime(DateTime.Now),
-                CurrentTime = TimeOnly.FromDateTime(DateTime.Now)
+                CurrentDate = DateTime.Now.ToShortDateString(),
+                CurrentTime = DateTime.Now.ToShortTimeString()
             };
         }
         private static void ShowConsoleTable(CurrencyRateDto finalCurrencyRate)

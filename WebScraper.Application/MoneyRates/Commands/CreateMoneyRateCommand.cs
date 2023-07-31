@@ -23,6 +23,8 @@ namespace WebScraper.Application.MoneyRates.Commands
         public async Task<MoneyRateDto> Handle(CreateMoneyRateCommand request, CancellationToken cancellationToken)
         {
             var moneyRate = request.MoneyRateDto;
+       
+            var current = Convert.ToDateTime(moneyRate.CurrentDate + " " + moneyRate.CurrentTime);
 
             if (moneyRate == null)
                 _logger.LogCritical("There is no Data as Money Rate!");
@@ -33,13 +35,10 @@ namespace WebScraper.Application.MoneyRates.Commands
             if (string.IsNullOrEmpty(moneyRate.Symbol))
                 _logger.LogError("Code is NULL!");
 
-            if (Convert.ToDateTime(moneyRate.CurrentDate) > DateTime.Now)
-                _logger.LogError("Current Date is greater than Now");
+            if (current > DateTime.Now)
+                _logger.LogError("Current Date and Time is greater than Now");
 
-            if (Convert.ToDateTime(moneyRate.CurrentTime) > DateTime.Now)
-                _logger.LogError("Current Time is greater than Now");
 
-            var current = Convert.ToDateTime(moneyRate.CurrentDate + " " + moneyRate.CurrentTime);
             var moneyRateDb = new MoneyRate(moneyRate.Name, moneyRate.Symbol, moneyRate.Sell,
                                             moneyRate.Buy, current);
 

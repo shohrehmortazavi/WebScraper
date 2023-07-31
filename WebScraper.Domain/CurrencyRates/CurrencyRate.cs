@@ -6,18 +6,16 @@ namespace WebScraper.Domain.CurrencyRates
     {
         public string Symbol { get; private set; }
         public decimal Rate { get; private set; }
-        public TimeOnly CurrentTime { get; private set; }
-        public DateOnly CurrentDate { get; private set; }
+        public DateTime CurrentDate { get; private set; }
         private CurrencyRate()
         {
 
         }
-        public CurrencyRate(string symbol, decimal rate, TimeOnly currentTime, DateOnly currentDate)
+        public CurrencyRate(string symbol, decimal rate, DateTime currentDate)
         {
             Id = Guid.NewGuid();
             Symbol = symbol;
             Rate = rate;
-            CurrentTime = currentTime;
             CurrentDate = currentDate;
             CreatedDate = DateTime.Now;
         }

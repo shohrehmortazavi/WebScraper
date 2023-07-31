@@ -13,8 +13,8 @@ namespace WebScraper.Domain.MoneyRates
         {
 
         }
-        public MoneyRate(string name, string symbol,
-                         decimal sell, decimal buy, DateTime currentDate)
+        public MoneyRate(string name, string symbol, decimal sell,
+                         decimal buy, DateTime currentDate)
         {
             Id = Guid.NewGuid();
             Name = name;

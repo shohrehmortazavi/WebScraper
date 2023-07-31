@@ -23,6 +23,7 @@ namespace WebScraper.Application.CurrencyRates.Commands
         public async Task<CurrencyRateDto> Handle(CreateCurrencyRateCommand request, CancellationToken cancellationToken)
         {
             var currencyRate = request.CurrencyRateDto;
+            var current = Convert.ToDateTime(currencyRate.CurrentDate + " " + currencyRate.CurrentTime);
 
             if (currencyRate == null)
                 _logger.LogCritical("There is no Data as Currency Rate!");
@@ -30,14 +31,12 @@ namespace WebScraper.Application.CurrencyRates.Commands
             if (string.IsNullOrEmpty(currencyRate.Symbol))
                 _logger.LogError("Symbol is NULL!");
 
-            if (currencyRate.CurrentDate > DateOnly.FromDateTime(DateTime.Now))
-                _logger.LogError("Current Date is greater than Now");
-
-            if (currencyRate.CurrentTime > TimeOnly.FromDateTime(DateTime.Now))
-                _logger.LogError("Current Time is greater than Now");
+            if (current > DateTime.Now)
+                _logger.LogError("Current Date and Time is greater than Now");
 
 
-            var currencyRateDb = new CurrencyRate(currencyRate.Symbol, currencyRate.Rate, currencyRate.CurrentTime, currencyRate.CurrentDate);
+
+            var currencyRateDb = new CurrencyRate(currencyRate.Symbol, currencyRate.Rate, current);
 
             await _unitOfWork.CurrencyRateWriteRepository.CreateAsync(currencyRateDb);
             await _unitOfWork.Commit();
